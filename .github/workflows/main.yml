@@ -29,4 +29,4 @@ jobs:
 
     - name: Push changes to main branch
       run: |
-        git push https://github-actions:${{ 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 }}@github.com/rajatmeshram/template-manager-plugin.git
+        git push https://github-actions:${{ secrets.GH_TOKEN }}@github.com/rajatmeshram/template-manager-plugin.git
