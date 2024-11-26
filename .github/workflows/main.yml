@@ -1,35 +1,32 @@
-name: Auto-Merge Stage into Main
+name: Build & Deploy
 
 on:
   push:
     branches:
       - stage
 
+permissions:
+  contents: write  # Allows the action to push to the repository
+
 jobs:
-  merge-stage-to-main:
+  merge:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout stage branch
-        uses: actions/checkout@v3
-        with:
-          ref: stage
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Git
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+    - name: Set up Git
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Fetch all branches
-        run: git fetch origin
+    - name: Merge stage into main
+      run: |
+        git fetch origin
+        git checkout main
+        git merge stage --no-ff -m "Auto-merge stage into main"
 
-      - name: Switch to main branch
-        run: |
-          git checkout main || git checkout -b main
-          git pull origin main || echo "No main branch history yet"
-
-      - name: Merge stage into main
-        run: |
-          git merge stage --no-ff --allow-unrelated-histories -m "Auto-merge stage into main"
-
-      - name: Push changes to main branch
-        run: git push origin main
+    - name: Push changes to main branch
+      run: |
+        git push https://github-actions:${{ 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 }}@github.com/rajatmeshram/template-manager-plugin.git
